@@ -19,24 +19,25 @@ def main():
     max = 0
     board = np.ones((n,n))
     unique = []
-    for i in range(math.ceil(n/2)+1):
-        for j in range(i+1):
-            unique.append((i,j))
-
     rest = []
-    for i in range(n):
-        for j in range(n):
-            if (i,j) not in unique:
-                rest.append((i,j))
-                
-    for comb in combinations(pos,n):
-        for q in comb:
-            queen_moves(*q, board, n)
-        current = np.sum(board)
-        board[:] = 1
-        if current > max:
-            optimal = comb
-            max = current
+    bound = math.ceil(n/2)
+    for r in range(n):
+        for c in range(n):
+            if r <= bound and c <= r:
+                unique.append((r,c))
+            else:
+                rest.append((r,c))
+    for i in range(len(unique)):
+        first = unique[i]
+        for later in combinations(rest+unique[:i]+unique[i+1:],n-1):
+            queen_moves(*first, board, n)
+            for q in later:
+                queen_moves(*q, board, n)
+            current = np.sum(board)
+            board[:] = 1
+            if current > max:
+                optimal = first+later
+                max = current
     print(optimal)
     print(max)
 
