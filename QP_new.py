@@ -16,7 +16,7 @@ def queen_moves(r,c,board,n):
     board[(list(reversed(upright)), upright)] = 0
 
 def main():
-    n = 5
+    n = 7
     max = 0
     board = np.ones((n,n))
     unique = []
@@ -44,6 +44,8 @@ def main():
             if current > max:
                 optimal = [first,*later]
                 max = current
+                if max==7:
+                    break
     bar.finish()
 
     print(optimal)

@@ -1,4 +1,3 @@
-import time
 import numpy as np
 import math
 from itertools import combinations
@@ -15,13 +14,12 @@ def queen_moves(r,c,board,n):
     upright = range(max(r+c+1-n,0), min(r+c+1,n))
     board[(list(reversed(upright)), upright)] = 0
 
-def main():
-    n = 5
-    max = 0
+def place_queens(n, max):
     board = np.ones((n,n))
     unique = []
     rest = []
     bound = math.ceil(n/2)
+    optimal = []
 
     for r in range(n):
         for c in range(n):
@@ -39,16 +37,29 @@ def main():
             for queen in later:
                 queen_moves(*queen, board, n)
             current = np.sum(board)
-            board[:] = 1
             bar.next()
-            if current > max:
-                optimal = [first,*later]
-                max = current
+            board[:]=1
+            if current == max:
+                optimal.append([first,*later])
     bar.finish()
+    return optimal
 
-    print(optimal)
-    print(max)
+def queen_place(r,c,board):
+    board[r,c]=0
 
-start_time = time.time()
+def display(n, placements):
+    for place in placements:
+        board = np.ones((n,n))
+        for i in range(n):
+            queen_place(*place[i],board)
+        print(board)
+        print()
+
+def main():
+    n = 4
+    max = 1
+    placements = place_queens(n,max)
+    print(len(placements))
+    display(n,placements)
+
 main()
-print("--- %s seconds ---" % (time.time() - start_time))
