@@ -30,7 +30,7 @@ def main():
             else:
                 rest.append((r,c))
 
-    total = math.factorial(n**2)*len(unique)/math.factorial(n**2-n+1)/math.factorial(n-1)
+    total = math.factorial(n**2-1)*len(unique)/math.factorial(n**2-n)/math.factorial(n-1)
     bar = Bar('Processing', max=total)
     for i in range(len(unique)):
         first = unique[i]
